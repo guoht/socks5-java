@@ -1,4 +1,4 @@
-package com.github.bpazy.socks5;
+package com.github.bpazy.socks5.bio;
 
 import com.github.bpazy.commons.io.IOUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * created on 2019/7/30
  */
 @Slf4j
-public class Socks5 {
+public class SocketSocks5 {
 
     private static final int EOF = -1;
     private static final int MAXIMUM_CLIENT = 50;
