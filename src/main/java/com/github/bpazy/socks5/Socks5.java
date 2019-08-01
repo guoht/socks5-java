@@ -10,7 +10,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author ziyuan
@@ -20,8 +22,9 @@ import java.util.concurrent.Executors;
 public class Socks5 {
 
     private static final int EOF = -1;
-    private static final ExecutorService handshakeExecutor = Executors.newCachedThreadPool();
-    private static final ExecutorService exchangeExecutor = Executors.newCachedThreadPool();
+    private static final int MAXIMUM_CLIENT = 50;
+    private static final ExecutorService handshakeExecutor = new ThreadPoolExecutor(1, MAXIMUM_CLIENT, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+    private static final ExecutorService exchangeExecutor = new ThreadPoolExecutor(2, MAXIMUM_CLIENT * 2, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(9999);
