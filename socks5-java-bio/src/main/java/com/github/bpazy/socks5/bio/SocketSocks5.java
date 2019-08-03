@@ -88,27 +88,27 @@ public class SocketSocks5 {
         log.info("client request url: {}, port: {}", dstAddr, dstPort);
 
         int dynamicLen = atyp == 3 ? 1 : 0;
-        byte[] domainResponseBytes = new byte[4 + dynamicLen + dstAddrBytes.length + 2]; // (ver, rep, rsv, aytp) + addrLen + addr + port
+        byte[] responseBytes = new byte[4 + dynamicLen + dstAddrBytes.length + 2]; // (ver, rep, rsv, aytp) + addrLen + addr + port
 
         // set handshake response ver, cmd, rsv, atyp
-        domainResponseBytes[0] = 5;
-        domainResponseBytes[1] = 0;
-        domainResponseBytes[2] = 0;
-        domainResponseBytes[3] = (byte) atyp;
+        responseBytes[0] = 5;
+        responseBytes[1] = 0;
+        responseBytes[2] = 0;
+        responseBytes[3] = (byte) atyp;
 
         // set handshake response dst.addr
         if (atyp == 1 || atyp == 4) {
-            System.arraycopy(dstAddrBytes, 0, domainResponseBytes, 4, dstAddrBytes.length);
+            System.arraycopy(dstAddrBytes, 0, responseBytes, 4, dstAddrBytes.length);
         } else {
-            domainResponseBytes[4] = (byte) dstAddrBytes.length;
-            System.arraycopy(dstAddrBytes, 0, domainResponseBytes, 5, dstAddrBytes.length);
+            responseBytes[4] = (byte) dstAddrBytes.length;
+            System.arraycopy(dstAddrBytes, 0, responseBytes, 5, dstAddrBytes.length);
         }
 
         // set handshake response dst.port
-        domainResponseBytes[domainResponseBytes.length - 2] = dstPortBytes[0];
-        domainResponseBytes[domainResponseBytes.length - 1] = dstPortBytes[1];
+        responseBytes[responseBytes.length - 2] = dstPortBytes[0];
+        responseBytes[responseBytes.length - 1] = dstPortBytes[1];
 
-        outputStream.write(domainResponseBytes);
+        outputStream.write(responseBytes);
         outputStream.flush();
         log.debug("handshake over");
         return new Socket(dstAddr, dstPort);
