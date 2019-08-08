@@ -10,7 +10,7 @@ Non-blocking I/O socks5-java with netty implementation.
 # Build
 ```
 # Get source code
-git clone github.com/Bpazy/socks5-java && cd socks5-java
+git clone https://github.com/Bpazy/socks5-java && cd socks5-java
 
 # Build multiple modules
 mvn package
